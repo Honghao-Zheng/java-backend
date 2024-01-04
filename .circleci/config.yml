@@ -1,0 +1,38 @@
+version: 2.1
+orbs:
+  aws-ecr: circleci/aws-ecr@8.2.1
+jobs:
+  build-and-test:
+    working_directory: ~/java-backend
+    docker:
+      - image: cimg/openjdk:17.0.7
+    steps:
+      - checkout
+      - run:
+          name: Build
+          command: mvn -B -DskipTests clean package
+          working_directory: ~/java-backend
+      - run:
+          name: Test
+          command: mvn test
+          working_directory: ~/java-backend
+  build-image-and-push:
+    working_directory: ~/java-backend
+    docker:
+      - image: cimg/aws:2023.05
+    steps:
+      - setup_remote_docker
+      - aws-ecr/build-and-push-image:
+          repo: java-cicd
+          path: "./"
+          build-path: "./" 
+          tag: ${CIRCLE_BUILD_NUM}
+          public-registry-alias: a5z6u3o2
+          public-registry: true
+workflows:
+  app-pipeline:
+    jobs:
+      - build-and-test
+      - build-image-and-push:
+          requires: 
+            - build-and-test
