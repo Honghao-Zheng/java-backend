@@ -17,15 +17,14 @@ management:
 
 spring:
   datasource:
-    url: jdbc:h2:mem:customer
-    username: sa
-    password: password
-    driverClassName: org.h2.Driver
+    url: jdbc:postgresql://database-1.clg1tg3ofm17.eu-west-2.rds.amazonaws.com:5432/employees
+    username: postgres
+    password: mysecretpassword
   jpa:
     hibernate:
       ddl-auto: validate
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.H2Dialect
+        dialect: org.hibernate.dialect.PostgreSQLDialect
         format_sql: true
-    show-sql: true
+    show-sql: false
