@@ -23,7 +23,7 @@ jobs:
     steps:
       - setup_remote_docker
       - aws-ecr/build-and-push-image:
-          repo: teamproject/backend
+          repo: java-cicd
           path: "./"
           build-path: "./" 
           tag: ${CIRCLE_BUILD_NUM}
